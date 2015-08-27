@@ -1,0 +1,72 @@
+<html>
+<head>
+	<title>Defend the Nexus</title>
+
+	<style>/* Removes Mobile Highlight */ *{-webkit-tap-highlight-color: rgba(0, 0, 0, 0);}</style>
+	<style>
+	body {
+		padding-top: 10px;
+
+		background: linear-gradient(rgba(0, 0, 0, 0.7), 
+									rgba(0, 0, 0, 0.8)),
+					url('img/background.png') no-repeat center center fixed;
+		background-size: cover;
+	}
+
+	body:after {
+		content: "";
+		background-color: black;
+	}
+
+	#canvas {
+		display: block;
+		margin: 0 auto;
+    	border: 5px solid red;
+    	background-color: black;
+    	opacity: .65;
+	}
+	</style>
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/cyborg/bootstrap.min.css">
+
+	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+	<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="https://code.createjs.com/createjs-2015.05.21.min.js"></script>
+	<script type="text/javascript" src="scripts/main.js"></script>
+	<script type="text/javascript" src="scripts/views/loading_view.js"></script>
+	<script type="text/javascript" src="scripts/views/title_view.js"></script>
+	<script type="text/javascript" src="scripts/views/game_view.js"></script>
+
+	<!-- Elements -->
+	<script type="text/javascript" src="scripts/elements/button.js"></script>
+	<script type="text/javascript" src="scripts/elements/loading_bar.js"></script>
+</head>
+<body onload="init();">
+	<div class="container">
+
+		<nav class="navbar navbar-default">
+			<div class="container-fluid">
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="index.html">Defend the Nexus</a>
+				</div>
+
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav">
+						<li><a href="about.html">About</a></li>
+					</ul>
+				</div><!-- /.navbar-collapse -->
+			</div><!-- /.container-fluid -->
+		</nav>
+
+		<canvas id="canvas" width="900" height="500"></canvas>
+	</div>
+</body>
+</html>
