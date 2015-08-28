@@ -1,5 +1,8 @@
 (function() {
-	var background;
+	var background, nexus;
+	var health = 100;
+
+	var ironback, kraken, ocklepod, plundercrab, razorfin;
 
 	function GameView(width, height, gameId, resources) {
 		this.Container_constructor();
@@ -16,10 +19,19 @@
 
 	p.setup = function() {
 		if(background == null) {
+			ironback = new this.resources.getResult("ironback");
+			kraken = new this.resources.getResult("kracken");
+			ocklepod = new this.resources.getResult("ocklepod");
+			plundercrab = new this.resources.getResult("plundercrab");
+
 			background = new createjs.Bitmap(this.resources.getResult("game-bg"));
 			background.sourceRect = new createjs.Rectangle(0, 265, this.width, this.height);
 
-			this.addChild(background);
+			nexus = new createjs.Bitmap(this.resources.getResult("nexus"));
+			nexus.x = this.width - 140;
+			nexus.y = this.height - 370;
+
+			this.addChild(background, nexus);
 		}
 	}
 

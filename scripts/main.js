@@ -36,7 +36,9 @@ function init() {
 		{id:"ocklepod", src:"img/ocklepod.png"},
 		{id:"plundercrab", src:"img/plundercrab.png"},
 		{id:"razorfin", src:"img/razorfin.png"},
-		{id:"game-bg", src:"img/game-bg.png"}]);
+
+		{id:"game-bg", src:"img/game-bg.png"},
+		{id:"nexus", src:"img/nexus.png"}]);
 
 	createjs.Ticker.on("tick", update);
 }
