@@ -1,7 +1,7 @@
 (function() {
 	var bar, outline;
 
-	function LoadingBar(width, height, padding, fillColor, frameColor) {
+	function Bar(width, height, padding, fillColor, frameColor) {
 		this.Container_constructor();
 
 		this.width = width;
@@ -13,7 +13,7 @@
 		this.setup();
 	}
 
-	var p = createjs.extend(LoadingBar, createjs.Container)
+	var p = createjs.extend(Bar, createjs.Container)
 
 	p.setup = function() {
 		bar = new createjs.Shape();
@@ -29,5 +29,5 @@
 		bar.scaleX = progress * this.width;
 	}
 
-	window.LoadingBar = createjs.promote(LoadingBar, "Container");
+	window.Bar = createjs.promote(Bar, "Container");
 }());

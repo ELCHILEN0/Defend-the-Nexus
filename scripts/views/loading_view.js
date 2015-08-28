@@ -13,7 +13,7 @@
 
 
 	p.setup = function() {
-		loadingBar = new LoadingBar(350, 60, 4, "white", "white");
+		loadingBar = new Bar(350, 60, 4, "white", "white");
 		loadingText = new createjs.Text("0% Loaded", "18px Arial", "white");
 
 		loadingText.textAlign = "center";
