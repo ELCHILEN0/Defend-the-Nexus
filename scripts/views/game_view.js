@@ -1,6 +1,9 @@
 (function() {
 	var background, nexus;
+	var nexusHealthBar;
 	var health = 100;
+
+	var minions = [];
 
 	var ironback, kraken, ocklepod, plundercrab, razorfin;
 
@@ -29,11 +32,23 @@
 		nexus.x = this.width - 140;
 		nexus.y = this.height - 370;
 
-		this.addChild(background, nexus);
+		nexusHealthBar = new Bar(80, 15, 2, "red", "black");
+		nexusHealthBar.update(health/100);
+
+		nexusHealthBar.x = this.width - 110;
+		nexusHealthBar.y = this.height - 370 - nexusHealthBar.height;
+
+		this.addChild(background, nexus, nexusHealthBar);
 	}
 
 	p.update = function() {
 		console.log("update");
+
+		if(health > 0) {
+			health--;
+
+			nexusHealthBar.update(health/100);
+		}
 	}
 
 	window.GameView = createjs.promote(GameView, "Container");
