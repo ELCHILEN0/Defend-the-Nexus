@@ -16,23 +16,20 @@
 	}
 	var p = createjs.extend(GameView, createjs.Container);
 
-
 	p.setup = function() {
-		if(background == null) {
-			ironback = new this.resources.getResult("ironback");
-			kraken = new this.resources.getResult("kracken");
-			ocklepod = new this.resources.getResult("ocklepod");
-			plundercrab = new this.resources.getResult("plundercrab");
+		ironback = this.resources.getResult("ironback");
+		kraken = this.resources.getResult("kracken");
+		ocklepod = this.resources.getResult("ocklepod");
+		plundercrab = this.resources.getResult("plundercrab");
 
-			background = new createjs.Bitmap(this.resources.getResult("game-bg"));
-			background.sourceRect = new createjs.Rectangle(0, 265, this.width, this.height);
+		background = new createjs.Bitmap(this.resources.getResult("game-bg"));
+		background.sourceRect = new createjs.Rectangle(0, 265, this.width, this.height);
 
-			nexus = new createjs.Bitmap(this.resources.getResult("nexus"));
-			nexus.x = this.width - 140;
-			nexus.y = this.height - 370;
+		nexus = new createjs.Bitmap(this.resources.getResult("nexus"));
+		nexus.x = this.width - 140;
+		nexus.y = this.height - 370;
 
-			this.addChild(background, nexus);
-		}
+		this.addChild(background, nexus);
 	}
 
 	p.update = function() {
