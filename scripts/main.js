@@ -23,7 +23,6 @@ function init() {
 		stage.addChild(GameView);
 		// select a random game and assign the game id variable
 	});
-	GameView = new GameView(canvas.width, canvas.height);
 
 	stage.addChild(LoadingView);
 
@@ -38,7 +37,6 @@ function init() {
 		{id:"plundercrab", src:"img/plundercrab.png"},
 		{id:"razorfin", src:"img/razorfin.png"},
 		{id:"game-bg", src:"img/game-bg.png"}]);
-
 
 	createjs.Ticker.on("tick", stage);
 }
@@ -55,8 +53,8 @@ function handleComplete(event) {
 		stage.removeChild(LoadingView)
 		stage.addChild(TitleView);
 	});
-
-	GameView.resources = queue;
+	
+	GameView = new GameView(canvas.width, canvas.height, 0, queue);
 }
 
 function update() {
@@ -67,18 +65,18 @@ function update() {
 }
 
 function addGameView() {
-	var kraken = new createjs.Bitmap(coin);
-	var razorfin = new createjs.Bitmap(minion1);
-	var ironback = new createjs.Bitmap(minion2);
-	var ocklepod = new createjs.Bitmap(minion3);
-	var plundercrab = new createjs.Bitmap(minion4);
+	// var kraken = new createjs.Bitmap(coin);
+	// var razorfin = new createjs.Bitmap(minion1);
+	// var ironback = new createjs.Bitmap(minion2);
+	// var ocklepod = new createjs.Bitmap(minion3);
+	// var plundercrab = new createjs.Bitmap(minion4);
 
-	razorfin.x = 64;
-	ironback.x = 64 * 2;
-	ocklepod.x = 64 * 3;
-	plundercrab.x = 64 * 4;
+	// razorfin.x = 64;
+	// ironback.x = 64 * 2;
+	// ocklepod.x = 64 * 3;
+	// plundercrab.x = 64 * 4;
 
-	GameView.addChild(kraken, razorfin, ironback, ocklepod, plundercrab);
+	// GameView.addChild(kraken, razorfin, ironback, ocklepod, plundercrab);
 	stage.addChild(GameView);
 
 	stage.update();
