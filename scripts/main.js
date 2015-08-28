@@ -38,7 +38,7 @@ function init() {
 		{id:"razorfin", src:"img/razorfin.png"},
 		{id:"game-bg", src:"img/game-bg.png"}]);
 
-	createjs.Ticker.on("tick", stage);
+	createjs.Ticker.on("tick", update);
 }
 
 function handleProgress(event) {
@@ -62,6 +62,7 @@ function update() {
 	if(stage.getChildIndex(GameView) != -1) {
 		GameView.update();
 	}
+	stage.update();
 }
 
 function addGameView() {
