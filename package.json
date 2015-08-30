@@ -1,0 +1,25 @@
+{
+  "name": "def-the-nexus",
+  "version": "1.0.0",
+  "description": "A game designed for the Riot API Challenge using data from the Bilgewater event.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "~4.9.x"
+  },
+  "engines": {
+    "node": "0.12.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ELCHILEN096/def-the-nexus"
+  },
+  "keywords": [
+    "node",
+    "heroku",
+    "riot"
+  ],
+  "license": "MIT"
+}
