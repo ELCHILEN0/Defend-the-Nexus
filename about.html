@@ -6,11 +6,6 @@
 	<style>
 	body {
 		padding-top: 10px;
-
-		background: linear-gradient(rgba(0, 0, 0, 0.7), 
-									rgba(0, 0, 0, 0.8)),
-					url('img/background.png') no-repeat center center fixed;
-		background-size: cover;
 	}
 
 	body:after {
@@ -36,13 +31,14 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="/">Defend the Nexus</a>
+					<img class="navbar-brand" src="images/landing-graphic.png">
 				</div>
 
 				<!-- Collect the nav links, forms, and other content for toggling -->
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 					<ul class="nav navbar-nav">
-						<li><a href="/about">About</a></li>
+						<li><a href="/">Home</a></li>
+						<li class="active"><a href="/about">About</a></li>
 					</ul>
 				</div><!-- /.navbar-collapse -->
 			</div><!-- /.container-fluid -->
@@ -50,6 +46,18 @@
 
 		<div class="col-md-12 col-sm-12">
 			<h1>About Defend the Nexus</h1>
+
+			<h3>Why was this made?</h3>
+			<p>Defend the Nexus was made as a submission for the Riot API challenge.  Its goal was to utilize some of the information during the Bilgewater event and create an enjoyable game in the process!</p>
+
+			<h3>What is the objective?</h3>
+			<p>Through this game your goal is to defend the nexus as long as you possibly can! You can shoot at the minions similarly to how turrets shoot at them in League of Legends!  Some minions have more health and take more shots however killing these gives a higher score!</p>
+
+			<h3>How does the game work?</h3>
+			<p>Using the Riot API the game fetches a match from the Bligewater event.  It then processes what brawlers were bought during the game and will then spawn waves of these brawlers at increasingly difficult speeds.</p>
+
+			<h3>Additional information!</h3>
+			<p>Images are taken, with consent, from the Riot website (see <a href="https://developer.riotgames.com/docs/app-guidelines">Guidelines</a>).  The website is developed using Node.js for basic routing, EaselJS for the game view and animation, and JQuery for network requests to the Riot API!</p>
 		</div>
 	</div>
 </body>
