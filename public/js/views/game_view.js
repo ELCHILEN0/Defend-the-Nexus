@@ -7,9 +7,26 @@
 	var nexusHealthBar;
 	var health = 100;
 
-	var minions = [];
+	var razorfin, ironback, plundercrab, ocklepod, kracken;
 
-	var ironback, kraken, ocklepod, plundercrab, razorfin;
+	var minionStats = {};
+	var minionData = [];
+
+	var spawnStack = [];
+
+	var minions = [];
+	var minionSpeed = 7;
+
+	var timeTillNextWave = 0;
+	var timeTillNextSpawn = 0;
+
+	var waveDelay = 360;
+	var spawnDelay = 30;
+
+	var waveDelayDelta = 75;
+	var spawnDelayDelta = 10;
+
+	var gameOver = false;
 
 	function GameView(width, height, resources) {
 		this.Container_constructor();
@@ -23,10 +40,34 @@
 	var p = createjs.extend(GameView, createjs.Container);
 
 	p.setup = function() {
-		ironback = this.resources["ironback"];
 		kraken = this.resources["kracken"];
-		ocklepod = this.resources["ocklepod"];
+
+		razorfin = this.resources["razorfin"];
+		ironback = this.resources["ironback"];
 		plundercrab = this.resources["plundercrab"];
+		ocklepod = this.resources["ocklepod"];
+
+		minionStats = {
+		RAZORFIN: {
+			health: 200,
+			damage: 2,
+			image: razorfin
+		},
+		IRONBACK: {
+			health: 200,
+			damage: 2,
+			image: ironback
+		},
+		PLUNDERCRAB: {
+			health: 75,
+			damage: 5,
+			image: plundercrab
+		},
+		OCKLEPOD: {
+			health: 75,
+			damage: 5,
+			image: razorfin
+		}};
 
 		background = new createjs.Bitmap(this.resources["game-bg"]);
 		background.sourceRect = new createjs.Rectangle(0, 265, this.width, this.height);
@@ -61,46 +102,123 @@
 							switch(event['itemId']) {
 								// Razorfin
 								case 3611:
-									minions[minions.length] = "razorfin";
-									break;
+								minionData[minionData.length] = "RAZORFIN";
+								break;
 
 								// Ironback
 								case 3612:
-									minions[minions.length] = "ironback";
-									break;
-							
+								minionData[minionData.length] = "IRONBACK";
+								break;
+
 								// Plundercrab
 								case 3613:
-									minions[minions.length] = "plundercrab";
-									break;
-									
+								minionData[minionData.length] = "PLUNDERCRAB";
+								break;
+
 								// Ocklepod
 								case 3614:
-									minions[minions.length] = "ocklepod";
-									break;
-									
+								minionData[minionData.length] = "OCKLEPOD";
+								break;
+
 							}
 						}
 					}
 				}
 			}
 
-			while(minions.length < 10) {
-				minions[minions.length] = "normal";
+			while(minionData.length < 10) {
+				minionData[minionData.length] = "NORMAL";
 			}
 		});
 	}
 
 	p.update = function() {
-		if(health > 0) {
-			health--;
+		if(gameOver) {
+			return;
+		}
 
+		if(timeTillNextWave <= 0) {
+			waveDelay = waveDelay - waveDelayDelta;
+			waveDelayDelta = waveDelayDelta/2;
+
+			spawnDelay = spawnDelay - spawnDelayDelta;
+			spawnDelayDelta = spawnDelayDelta/2;
+
+			timeTillNextWave = waveDelay;
+
+			spawnStack = spawnStack.concat(shuffle(minionData));
+		} else {
+			timeTillNextWave--;
+		}
+
+		if(timeTillNextSpawn <= 0) {
+			if(spawnStack.length != 0) {
+				timeTillNextSpawn = spawnDelay;
+
+				var id = minions.length;
+				var type = spawnStack.shift();
+
+				var minion = new Minion(minionStats[type].health, minionStats[type].damage, type, minionStats[type].image);
+				minion.y = 400;
+				minions[minions.length] = minion;
+				this.addChild(minion);
+			}
+		} else {
+			timeTillNextSpawn--;
+		}
+
+		var kill = [];
+
+		for(i = 0; i < minions.length; i++) {
+			var minion = minions[i];
+			minion.x += minionSpeed;
+
+			if(minion.x >= nexus.x) {
+				kill.push(i);
+				health -= minion.damage;
+			}
+		}
+
+		for (i in kill) {
+			this.removeChild(minions[i]);
+			minions.splice(i, 1);
+		}
+
+		if(health >= 0) {
 			nexusHealthBar.update(health/100);
+		} else {
+			var gameOverHightlight = new createjs.Shape();
+			gameOverHightlight.graphics.beginFill("black").drawRect(0, 0, this.width, this.height);
+			gameOverHightlight.alpha = .7;
+
+			var gameOverText = new createjs.Text("Game Over", "64px Arial", "white");
+			gameOverText.textAlign = "center";
+			gameOverText.textBaseline = "middle";
+			gameOverText.x = this.width/2;
+			gameOverText.y = this.height/2;
+
+			this.addChild(gameOverHightlight, gameOverText)
+			gameOver = true;
+		}
+	}
+
+	function shuffle(array) {
+		var currentIndex = array.length, temporaryValue, randomIndex ;
+
+		  // While there remain elements to shuffle...
+		  while (0 !== currentIndex) {
+
+		    // Pick a remaining element...
+		    randomIndex = Math.floor(Math.random() * currentIndex);
+		    currentIndex -= 1;
+
+		    // And swap it with the current element.
+		    temporaryValue = array[currentIndex];
+		    array[currentIndex] = array[randomIndex];
+		    array[randomIndex] = temporaryValue;
 		}
 
-		for(minion in minions) {
-			console.log(minion);
-		}
+		return array;
 	}
 
 	window.GameView = createjs.promote(GameView, "Container");
