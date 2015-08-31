@@ -29,7 +29,12 @@
 	var spawnDelayDelta = 10;
 
 	var turretDamage = 50;
-	var turretDelay = 7;
+
+	var timeTillNextShot = 0;
+	var shotDelay = 5;
+
+	var score = 0;
+	var scoreboard;
 
 	var gameOver = false;
 
@@ -45,7 +50,7 @@
 	var p = createjs.extend(GameView, createjs.Container);
 
 	p.setup = function() {
-		kraken = this.resources["kracken"];
+		kraken = this.resources["kraken"];
 
 		razorfin = this.resources["razorfin"];
 		ironback = this.resources["ironback"];
@@ -58,22 +63,26 @@
 		RAZORFIN: {
 			health: 150,
 			damage: 2,
-			image: razorfin
+			image: razorfin,
+			score: 150
 		},
 		IRONBACK: {
 			health: 150,
 			damage: 2,
-			image: ironback
+			image: ironback,
+			score: 150
 		},
 		PLUNDERCRAB: {
 			health: 75,
 			damage: 5,
-			image: plundercrab
+			image: plundercrab,
+			score: 75
 		},
 		OCKLEPOD: {
 			health: 75,
 			damage: 5,
-			image: razorfin
+			image: razorfin,
+			score: 75
 		}};
 
 		background = new createjs.Bitmap(this.resources["game-bg"]);
@@ -89,7 +98,9 @@
 		nexusHealthBar.x = this.width - 110;
 		nexusHealthBar.y = this.height - 370 - nexusHealthBar.height;
 
-		this.addChild(background, nexus, nexusHealthBar);
+		scoreboard = new Scoreboard(score, kraken);
+
+		this.addChild(background, nexus, nexusHealthBar, scoreboard);
 
 		region = "na";
 		matchId = 1907069332;
@@ -145,10 +156,10 @@
 	var projectileStartY = 140;
 
 	function handleClick(event) {
-		if(turretDelay > 0) {
+		if(timeTillNextShot > 0) {
 			return;
 		} 
-		
+
 		x = event.stageX;
 		y = event.stageY;
 
@@ -164,10 +175,14 @@
 		projectile.y = projectileStartY;
 		projectiles.push(projectile);
 		this.addChild(projectile);
+
+		timeTillNextShot = shotDelay;
 	}
 
 	p.update = function() {
-
+		if(timeTillNextShot > 0) {
+			timeTillNextShot--;
+		}
 
 		if(gameOver) {
 			return;
@@ -214,7 +229,6 @@
 			if(projectile.x < 0 || projectile.x > this.width || projectile.y < 0 || projectile.y > this.height) {
 				projectilesToRemove.push(i);
 			} else {
-				// TODO: if the projectile collides with a minion damage minion remove projectile
 				for(j = 0; j < minions.length; j++) {
 					var minion = minions[j];
 
@@ -237,6 +251,8 @@
 
 			if(minion.health <= 0) {
 				minionsToRemove.push(i);
+				score += minionStats[minion.type].score;
+				scoreboard.update(score);
 			} else if(minion.x >= nexus.x) {
 				minionsToRemove.push(i);
 				health -= minion.damage;
