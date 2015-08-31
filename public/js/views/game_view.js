@@ -102,10 +102,12 @@
 
 		this.addChild(background, nexus, nexusHealthBar, scoreboard);
 
-		region = "na";
-		matchId = 1907069332;
+		var regions = ["BR", "EUNE", "EUW", "KR", "LAN", "LAS", "NA", "OCE", "RU", "TR"];
 
-		$.get("https://na.api.pvp.net/api/lol/" + region + "/v2.2/match/" + matchId + "?includeTimeline=true" + "&api_key=" + apiKey, function( data ) {
+		region = regions[Math.floor(Math.random()*regions.length)];
+		matchId = this.resources[region.toLowerCase()][Math.floor(Math.random()*region.toLowerCase().length)];
+		
+		$.get("https://na.api.pvp.net/api/lol/" + region.toLowerCase() + "/v2.2/match/" + matchId + "?includeTimeline=true" + "&api_key=" + apiKey, function( data ) {
 			// iterate through the frames
 			for(i = 0; i < data['timeline']['frames'].length; i++) {
 				// if there are events continue
