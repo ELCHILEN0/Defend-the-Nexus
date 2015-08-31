@@ -21,9 +21,18 @@ function init() {
 	// Initialize views
 	LoadingView = new LoadingView(canvas.width, canvas.height);
 	TitleView = new TitleView(canvas.width, canvas.height, function(event) {
-		stage.removeChild(TitleView);
+		createjs.Tween.get(TitleView)
+		.set({alpha:1, visible: true})
+		.to({alpha:0, visible:false}, 500)
+		.call(function() {
+			stage.removeChild(TitleView)
+		});
+
+		GameView.alpha = 0;
 		stage.addChild(GameView);
-		// select a random game and assign the game id variable
+		createjs.Tween.get(GameView)
+		.set({alpha:0, visible: true})
+		.to({alpha:1, visible:true}, 1000);
 	});
 
 	stage.addChild(LoadingView);
