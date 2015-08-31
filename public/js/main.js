@@ -5,6 +5,8 @@ var centerX, centerY;
 
 var resources = new Object();
 
+var backgroundSound;
+
 // Views
 var LoadingView, TitleView, GameView;
 
@@ -40,6 +42,9 @@ function init() {
 	// Loading
 	queue = new createjs.LoadQueue(false);
 
+	createjs.Sound.alternateExtensions = ["mp3"];
+	queue.installPlugin(createjs.Sound);
+
 	queue.on("fileload", handleFileLoad, this);
 	queue.on("progress", handleProgress, this);
 	queue.on("complete", handleComplete, this);
@@ -54,16 +59,18 @@ function init() {
 		{id:"ball", src:"images/ball-blue.png"},
 		{id:"nexus", src:"images/nexus.png"},
 
-		{id:"match-ids-br", src:"json/BR.json"},
-		{id:"match-ids-eune", src:"json/EUNE.json"},
-		{id:"match-ids-euw", src:"json/EUW.json"},
-		{id:"match-ids-kr", src:"json/KR.json"},
-		{id:"match-ids-lan", src:"json/LAN.json"},
-		{id:"match-ids-las", src:"json/LAS.json"},
-		{id:"match-ids-na", src:"json/NA.json"},
-		{id:"match-ids-oce", src:"json/OCE.json"},
-		{id:"match-ids-ru", src:"json/RU.json"},
-		{id:"match-ids-tr", src:"json/TR.json"}]);
+		{id:"br", src:"json/BR.json"},
+		{id:"eune", src:"json/EUNE.json"},
+		{id:"euw", src:"json/EUW.json"},
+		{id:"kr", src:"json/KR.json"},
+		{id:"lan", src:"json/LAN.json"},
+		{id:"las", src:"json/LAS.json"},
+		{id:"na", src:"json/NA.json"},
+		{id:"oce", src:"json/OCE.json"},
+		{id:"ru", src:"json/RU.json"},
+		{id:"tr", src:"json/TR.json"},
+
+		{id:"bit-rush", src:"sound/bit_rush.mp3"}]);
 
 	createjs.Ticker.on("tick", update);
 }
@@ -84,7 +91,9 @@ function handleComplete(event) {
 		stage.removeChild(LoadingView)
 		stage.addChild(TitleView);
 	});
-	
+
+	createjs.Sound.play("bit-rush", {loop:-1});
+
 	GameView = new GameView(canvas.width, canvas.height, resources);
 }
 
