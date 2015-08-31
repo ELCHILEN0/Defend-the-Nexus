@@ -23,12 +23,11 @@
 		minion.y = this.healthBar.height + 5;
 
 		this.addChild(this.healthBar, minion); 
+		this.setBounds(0, this.healthBar.height + 5, 64, 64);
 	}
 
 	p.reduceHealth = function(damage) {
-		if(this.health > 0 && this.health - damage > 0) {
-			this.health = this.health - damage > 0 ? this.health - damage : 0;
-		}
+		this.health = this.health - damage > 0 ? this.health - damage : 0;
 
 		this.healthBar.update(this.health/this.maxHealth);
 	}

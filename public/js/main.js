@@ -51,6 +51,7 @@ function init() {
 		{id:"razorfin", src:"images/razorfin.png"},
 
 		{id:"game-bg", src:"images/game-bg.png"},
+		{id:"ball", src:"images/ball-blue.png"},
 		{id:"nexus", src:"images/nexus.png"},
 
 		{id:"match-ids-br", src:"json/BR.json"},

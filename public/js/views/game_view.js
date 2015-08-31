@@ -7,7 +7,7 @@
 	var nexusHealthBar;
 	var health = 100;
 
-	var razorfin, ironback, plundercrab, ocklepod, kracken;
+	var razorfin, ironback, plundercrab, ocklepod, kracken, ball;
 
 	var minionStats = {};
 	var minionData = [];
@@ -17,6 +17,8 @@
 	var minions = [];
 	var minionSpeed = 7;
 
+	var projectiles = [];
+
 	var timeTillNextWave = 0;
 	var timeTillNextSpawn = 0;
 
@@ -25,6 +27,9 @@
 
 	var waveDelayDelta = 75;
 	var spawnDelayDelta = 10;
+
+	var turretDamage = 50;
+	var turretDelay = 7;
 
 	var gameOver = false;
 
@@ -47,14 +52,16 @@
 		plundercrab = this.resources["plundercrab"];
 		ocklepod = this.resources["ocklepod"];
 
+		ball = this.resources["ball"];
+
 		minionStats = {
 		RAZORFIN: {
-			health: 200,
+			health: 150,
 			damage: 2,
 			image: razorfin
 		},
 		IRONBACK: {
-			health: 200,
+			health: 150,
 			damage: 2,
 			image: ironback
 		},
@@ -130,9 +137,38 @@
 				minionData[minionData.length] = "NORMAL";
 			}
 		});
+
+		this.on("click", handleClick);
+	}
+
+	var projectileStartX = 810;
+	var projectileStartY = 140;
+
+	function handleClick(event) {
+		if(turretDelay > 0) {
+			return;
+		} 
+		
+		x = event.stageX;
+		y = event.stageY;
+
+		deltaX = (x - projectileStartX);
+		deltaY = (y - projectileStartY);
+		hyp = Math.sqrt(deltaX*deltaX + deltaY*deltaY)
+
+		deltaX = deltaX/hyp
+		deltaY = deltaY/hyp
+
+		var projectile = new Projectile(deltaX, deltaY, ball)
+		projectile.x = projectileStartX;
+		projectile.y = projectileStartY;
+		projectiles.push(projectile);
+		this.addChild(projectile);
 	}
 
 	p.update = function() {
+
+
 		if(gameOver) {
 			return;
 		}
@@ -167,19 +203,47 @@
 			timeTillNextSpawn--;
 		}
 
-		var kill = [];
+		var minionsToRemove = [];
+		var projectilesToRemove = [];
+
+		for(i = 0; i < projectiles.length; i++) {
+			var projectile = projectiles[i];
+			projectile.x = projectile.x + projectile.deltaX*10;
+			projectile.y = projectile.y + projectile.deltaY*10;
+
+			if(projectile.x < 0 || projectile.x > this.width || projectile.y < 0 || projectile.y > this.height) {
+				projectilesToRemove.push(i);
+			} else {
+				// TODO: if the projectile collides with a minion damage minion remove projectile
+				for(j = 0; j < minions.length; j++) {
+					var minion = minions[j];
+
+					if(checkIntersection(projectile, minion)) {
+						projectilesToRemove.push(j);
+						minion.reduceHealth(50);
+					}
+				}
+			}
+		}
+
+		for (i in projectilesToRemove.reverse()) {
+			this.removeChild(projectiles[i]);
+			projectiles.splice(i, 1);
+		}
 
 		for(i = 0; i < minions.length; i++) {
 			var minion = minions[i];
 			minion.x += minionSpeed;
 
-			if(minion.x >= nexus.x) {
-				kill.push(i);
+			if(minion.health <= 0) {
+				minionsToRemove.push(i);
+			} else if(minion.x >= nexus.x) {
+				minionsToRemove.push(i);
 				health -= minion.damage;
-			}
+			} 
 		}
 
-		for (i in kill) {
+		for (i in minionsToRemove.reverse()) {
 			this.removeChild(minions[i]);
 			minions.splice(i, 1);
 		}
@@ -201,6 +265,14 @@
 			gameOver = true;
 		}
 	}
+
+	function checkIntersection(rect1, rect2) {
+    	if ( rect1.x >= rect2.x + rect2.getBounds().width || rect1.x + rect1.getBounds().width <= rect2.x || rect1.y >= rect2.y + rect2.getBounds().height || rect1.y + rect1.getBounds().height <= rect2.y ) {
+    		return false;
+    	}
+    	return true;
+	}
+
 
 	function shuffle(array) {
 		var currentIndex = array.length, temporaryValue, randomIndex ;
