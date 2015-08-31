@@ -1,4 +1,4 @@
-# Defend-the-Nexus
+# Defend the Nexus
 
 ##Why was this made?
 Defend the Nexus was made as a submission for the Riot API challenge.  Its goal was to utilize some of the information during the Bilgewater event and create an enjoyable game in the process!
