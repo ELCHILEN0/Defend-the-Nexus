@@ -93,7 +93,6 @@ function handleComplete(event) {
 	});
 
 	createjs.Sound.play("bit-rush", {loop:-1});
-
 	GameView = new GameView(canvas.width, canvas.height, resources);
 }
 
