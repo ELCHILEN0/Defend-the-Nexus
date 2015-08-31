@@ -8,7 +8,7 @@
 
 		this.type = type;
 		this.image = image;
-		this.healthBar = new Bar(40, 7, 1, "red", "black");
+		this.healthBar = new Bar(46, 7, 1, "red", "black");
 
 		this.setup();
 	}
@@ -17,15 +17,15 @@
 
 	p.setup = function() {
 		this.healthBar.update(this.health/this.maxHealth);
+		this.healthBar.x = 9;
 
-		minion = new createjs.Bitmap(this.image);
-		minion.y = this.healthBar.height;
-		minion.sourceRect = new createjs.Rectangle(0, 265, this.width, this.height);
+		var minion = new createjs.Bitmap(this.image);
+		minion.y = this.healthBar.height + 5;
 
 		this.addChild(this.healthBar, minion); 
 	}
 
-	p.damage = function(damage) {
+	p.reduceHealth = function(damage) {
 		if(this.health > 0 && this.health - damage > 0) {
 			this.health = this.health - damage > 0 ? this.health - damage : 0;
 		}
